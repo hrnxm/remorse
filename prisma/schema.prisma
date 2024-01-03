@@ -13,14 +13,14 @@ generator client {
 
 model Post {
     id        Int      @id @default(autoincrement())
-    name      String
+    userId    String
+    content   String   @db.VarChar(750)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
+    user User @relation(fields: [userId], references: [id])
 
-    @@index([name])
+    @@index([userId])
 }
 
 // Necessary for Next auth
