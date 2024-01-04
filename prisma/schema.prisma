@@ -12,7 +12,7 @@ generator client {
 }
 
 model Post {
-    id        Int      @id @default(autoincrement())
+    id        String   @id @default(cuid())
     userId    String
     content   String   @db.VarChar(750)
     createdAt DateTime @default(now())
