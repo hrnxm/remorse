@@ -118,10 +118,18 @@ const PostView = (props: { post: PostWithUser }) => {
 };
 
 const Home = () => {
-  const { data } = api.posts.getAll.useQuery();
-  const { data: sessionData } = useSession();
+  const { data, isLoading } = api.posts.getAll.useQuery();
+  const { data: sessionData, status } = useSession();
 
-  if (!data) return <div>No data!</div>;
+  if (isLoading || status === "loading")
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <span className="relative flex h-14 w-14">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
+          <span className="relative inline-flex h-14 w-14 rounded-full bg-slate-300"></span>
+        </span>
+      </div>
+    );
 
   return (
     <>
