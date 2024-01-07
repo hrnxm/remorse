@@ -100,7 +100,7 @@ const PostView = (props: { post: PostWithUser }) => {
         className="rounded-full"
       />
       <div className="flex flex-col">
-        <span className="text-slate-300">
+        <span className="cursor-default text-slate-200">
           @{post.user.email?.split("@")[0]} ·{" "}
           <span className="text-slate-400">
             {post.createdAt.getDate() + "."}
