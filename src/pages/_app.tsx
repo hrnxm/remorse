@@ -7,6 +7,7 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
+import { ThemeProvider } from "~/components/ThemeProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,9 +25,15 @@ const MyApp: AppType<{ session: Session | null }> = ({
           font-family: ${inter.style.fontFamily};
         }
       `}</style>
-      <SessionProvider session={session}>
-        <Component {...pageProps} />
-      </SessionProvider>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="dark"
+        disableTransitionOnChange
+      >
+        <SessionProvider session={session}>
+          <Component {...pageProps} />
+        </SessionProvider>
+      </ThemeProvider>
     </>
   );
 };
