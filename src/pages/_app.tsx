@@ -14,7 +14,7 @@ const inter = Inter({
   variable: "--font-sans",
 });
 
-const MyApp: AppType<{ session: Session | null }> = ({
+const Remorse: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
@@ -38,4 +38,4 @@ const MyApp: AppType<{ session: Session | null }> = ({
   );
 };
 
-export default api.withTRPC(MyApp);
+export default api.withTRPC(Remorse);
