@@ -92,7 +92,7 @@ type PostWithUser = RouterOutputs["posts"]["getAll"][number];
 const PostView = (props: { post: PostWithUser }) => {
   const { post } = props;
   return (
-    <div className="flex gap-4 border-b border-slate-400 p-4">
+    <div className="flex items-start gap-4 border-b border-slate-400 p-4">
       <Image
         src={post.user.image || Avatar}
         alt="user avatar"
