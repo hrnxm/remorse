@@ -2,6 +2,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import Avatar from "../../public/avatar.png";
+import LoadingPulser from "../components/LoadingPulser";
 
 import { RouterOutputs, api } from "~/utils/api";
 
@@ -121,15 +122,7 @@ const Home = () => {
   const { data, isLoading } = api.posts.getAll.useQuery();
   const { data: sessionData, status } = useSession();
 
-  if (isLoading || status === "loading")
-    return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <span className="relative flex h-14 w-14">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
-          <span className="relative inline-flex h-14 w-14 rounded-full bg-slate-300"></span>
-        </span>
-      </div>
-    );
+  if (isLoading || status === "loading") return <LoadingPulser />;
 
   return (
     <>
