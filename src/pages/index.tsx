@@ -3,8 +3,14 @@ import Head from "next/head";
 import Image from "next/image";
 import Avatar from "../../public/avatar.png";
 import LoadingPulser from "../components/LoadingPulser";
-
 import { RouterOutputs, api } from "~/utils/api";
+import { useState } from "react";
+import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
+import Kbd from "~/components/Kbd";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { useToast } from "~/components/ui/use-toast";
+import { Toaster } from "~/components/ui/toaster";
 
 const Logos = () => {
   return (
@@ -67,11 +73,34 @@ const Auth = () => {
 
 const CreatePortWizard = () => {
   const { data: sessionData } = useSession();
+  const [input, setInput] = useState("");
 
   if (!sessionData?.user) return null;
 
+  const ctx = api.useUtils();
+
+  const { toast } = useToast();
+
+  const { mutate: createPost, isLoading: isPosting } =
+    api.posts.create.useMutation({
+      onSuccess: () => {
+        setInput("");
+        ctx.posts.getAll.invalidate();
+      },
+      onError(error) {
+        const message =
+          error.data?.zodError?.fieldErrors.content?.at(0) ||
+          "Unknown error :(";
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: message,
+        });
+      },
+    });
+
   return (
-    <div className="flex w-full gap-3 border-b border-slate-400 p-4">
+    <div className="flex w-full items-start gap-3 border-b border-slate-400 p-4">
       <Image
         src={sessionData.user.image || Avatar}
         alt="user avatar"
@@ -79,10 +108,37 @@ const CreatePortWizard = () => {
         height={55}
         className="rounded-full"
       />
-      <input
-        placeholder="Type some morse code!"
-        className="w-full bg-transparent outline-none"
-      />
+      <div className="flex w-full flex-col gap-3">
+        <Textarea
+          placeholder="Type some morse code..."
+          maxLength={750}
+          className="max-h-32 resize-y"
+          rows={2}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          disabled={isPosting}
+          spellCheck={false}
+        />
+        <div className="flex justify-between">
+          <div className="flex items-start gap-3">
+            <Kbd>•</Kbd>
+            <Kbd>—</Kbd>
+          </div>
+          {isPosting ? (
+            <Button disabled>
+              <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+              Posting
+            </Button>
+          ) : (
+            <Button
+              disabled={!input.trim().length}
+              onClick={() => createPost({ content: input })}
+            >
+              Post
+            </Button>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
@@ -133,7 +189,7 @@ const Home = () => {
       </Head>
       <main className="flex min-h-screen justify-center">
         <div className="h-full w-full border-x border-slate-400 md:max-w-3xl">
-          <header className="bg-background sticky top-0 flex h-20 w-full items-center justify-between border-y border-slate-400 p-3">
+          <header className="sticky top-0 flex h-20 w-full items-center justify-between border-y border-slate-400 bg-background p-3">
             <Image
               src="/logo-white.svg"
               alt="Logo"
@@ -149,6 +205,7 @@ const Home = () => {
           })}
         </div>
       </main>
+      <Toaster />
     </>
   );
 };
