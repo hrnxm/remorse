@@ -3,7 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Avatar from "../../public/avatar.png";
 import LoadingPulser from "../components/LoadingPulser";
-import { RouterOutputs, api } from "~/utils/api";
+import { type RouterOutputs, api } from "~/utils/api";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
@@ -52,7 +52,7 @@ const Auth = () => {
     <div className="flex flex-col items-center justify-center">
       {sessionData ? (
         <Image
-          src={sessionData.user.image || Avatar}
+          src={sessionData.user.image ?? Avatar}
           alt="user avatar"
           width={40}
           height={40}
@@ -85,11 +85,11 @@ const CreatePortWizard = () => {
     api.posts.create.useMutation({
       onSuccess: () => {
         setInput("");
-        ctx.posts.getAll.invalidate();
+        void ctx.posts.getAll.invalidate();
       },
       onError(error) {
         const message =
-          error.data?.zodError?.fieldErrors.content?.at(0) ||
+          error.data?.zodError?.fieldErrors.content?.at(0) ??
           "Unknown error :(";
         toast({
           variant: "destructive",
@@ -102,7 +102,7 @@ const CreatePortWizard = () => {
   return (
     <div className="flex w-full items-start gap-3 border-b border-slate-400 p-4">
       <Image
-        src={sessionData.user.image || Avatar}
+        src={sessionData.user.image ?? Avatar}
         alt="user avatar"
         width={55}
         height={55}
@@ -150,7 +150,7 @@ const PostView = (props: { post: PostWithUser }) => {
   return (
     <div className="flex items-start gap-4 border-b border-slate-400 p-4">
       <Image
-        src={post.user.image || Avatar}
+        src={post.user.image ?? Avatar}
         alt="user avatar"
         width={55}
         height={55}
