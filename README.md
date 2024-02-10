@@ -14,7 +14,8 @@ Built with:
   - [Prisma](https://www.prisma.io/)
   - [NextAuth.js](https://next-auth.js.org/)
 - [Vercel](https://vercel.com/)
-- [PlanetScale](https://planetscale.com/)
+- <del>[PlanetScale](https://planetscale.com/docs/concepts/planetscale-plans#self-serve-plans)</del> Hobby plan is no longer available in my country 🤷🏻‍♂️
+- [Supabase](https://supabase.com/)
 
 Still a work in progress.
 
